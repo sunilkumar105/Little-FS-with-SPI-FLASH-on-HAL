@@ -168,26 +168,30 @@ bool deleteFilefromFlash(const char*fileName){
 // Function to read and print storage details
 void readAndPrintStorageDetails(void){
     // Calculate used bytes in the filesystem
-    lfs_ssize_t used_bytes = lfs_fs_size (&littlefs);
+    lfs_ssize_t used_blocks = lfs_fs_size (&littlefs);
+    uint64_t used_bytes = (uint64_t) used_blocks * littlefs_config.block_size;
+
     // Calculate total bytes in the filesystem
-    lfs_ssize_t total_bytes = littlefs_config.block_count
+    uint64_t total_bytes = (uint64_t) littlefs_config.block_count
 	    * littlefs_config.block_size;
 
-    total_bytes = total_bytes / 1024;
-    used_bytes = used_bytes / 1024;
-//@todo solve this print issue, should have printed in MB
+    // Convert bytes to megabytes (MB)
+    float used_mb = (float) used_bytes / (1024 * 1024);
+    float total_mb = (float) total_bytes / (1024 * 1024);
+    float free_mb = (float) total_mb - used_mb;
+
     // Print storage details
-    printf ("Storage Details:\r\n");
-    printf ("  Used Bytes: %ld\r\n", (long) used_bytes);
-    printf ("  Total Bytes: %ld\r\n", (long) total_bytes);
-    printf ("  Free Bytes: %ld\r\n", (long) (total_bytes - used_bytes));
+    printf ("SPI Flash Storage Details:\r\n");
+    printf ("Used Space: %.2f" " MB\r\n", used_mb);
+    printf ("Total Space: %.2f" " MB\r\n", total_mb);
+    printf ("Free Space: %.2f" " MB\r\n", free_mb);
 }
 
 // Function to list files with their sizes
 void listFiles(void){
     lfs_dir_t dir;
     struct lfs_info info;
-
+    printf ("[ INFO ] Listing files present in the SPI FLASH \r\n");
     // Open the root directory
     int err = lfs_dir_open (&littlefs, &dir, "/");
     if(err){

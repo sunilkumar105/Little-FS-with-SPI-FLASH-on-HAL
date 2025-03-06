@@ -70,6 +70,7 @@ bool readFilefromFlash(const char*fileName, size_t bytesToRead,
  * @param fileSizeToWrite: Size of the data to append.
  * @param ret_bytesWritten: Pointer to store the number of bytes written.
  * @return: true if successful, false otherwise.
+ * @Note If the file already exists, it puts a \n to put it in the new line
  */
 bool appendDataAtTheEndOfFile(const char*fileName, const char*dataBuffer,
 			      size_t fileSizeToWrite, size_t*ret_bytesWritten);
