@@ -43,8 +43,8 @@ void formatFlash(void);
  * @Note: If the file exists it will truncate the file to 0th position
  * 		  which means the existing file will get erased
  */
-bool saveFileIntoFlash(const char*fileName, const void*data, size_t dataSize,
-			  size_t*ret_BytesWritten);
+bool saveFileIntoFlash(const char *fileName, const void *data, size_t dataSize,
+		size_t *ret_BytesWritten);
 
 /**
  * Get the size of a file in LittleFS.
@@ -52,7 +52,7 @@ bool saveFileIntoFlash(const char*fileName, const void*data, size_t dataSize,
  * @param ret_FileSize: Pointer to store the file size.
  * @return: true if successful, false otherwise.
  */
-bool getFileSize(const char*fileName, size_t*ret_FileSize);
+bool getFileSize(const char *fileName, size_t *ret_FileSize);
 
 /**
  * Read data from a file in LittleFS.
@@ -62,8 +62,8 @@ bool getFileSize(const char*fileName, size_t*ret_FileSize);
  * @param ret_DataSize: Pointer to store the number of bytes read.
  * @return: true if successful, false otherwise.
  */
-bool readFilefromFlash(const char*fileName, size_t bytesToRead,
-		       char*ret_DataBuffer, size_t*ret_DataSize);
+bool readFilefromFlash(const char *fileName, size_t bytesToRead,
+		char *ret_DataBuffer, size_t *ret_DataSize);
 
 /**
  * Append data to the end of a file in LittleFS.
@@ -72,26 +72,40 @@ bool readFilefromFlash(const char*fileName, size_t bytesToRead,
  * @param fileSizeToWrite: Size of the data to append.
  * @param ret_bytesWritten: Pointer to store the number of bytes written.
  * @return: true if successful, false otherwise.
+ * @Note It will just add the new data at the end of file without adding
+ * 		 any marker between the existing an dnew data
+ */
+bool appendDataAtTheEndOfFile(const char *fileName, const char *dataBuffer,
+		size_t fileSizeToWrite, size_t *ret_bytesWritten);
+
+/**
+ * Append data to the end of a file with new line in LittleFS.
+ * @param fileName: Name of the file to append data to.
+ * @param dataBuffer: Pointer to the data to append.
+ * @param fileSizeToWrite: Size of the data to append.
+ * @param ret_bytesWritten: Pointer to store the number of bytes written.
+ * @return: true if successful, false otherwise.
  * @Note If the file already exists, it puts a \n to put it in the new line
  */
-bool appendDataAtTheEndOfFile(const char*fileName, const char*dataBuffer,
-			      size_t fileSizeToWrite, size_t*ret_bytesWritten);
+bool appendDataAtTheEndOfFileWithNewLine(const char *fileName,
+		const char *dataBuffer, size_t fileSizeToWrite,
+		size_t *ret_bytesWritten);
 
 /**
  * Delete a file from LittleFS.
  * @param fileName: Name of the file to delete.
  * @return: true if successful, false otherwise.
  */
-bool deleteFilefromFlash(const char*fileName);
+bool deleteFilefromFlash(const char *fileName);
 
 /*
  * Read single line from the flash
  * */
-char* lfs_gets(char*buf, int size, lfs_file_t*file);
+char* lfs_gets(char *buf, int size, lfs_file_t *file);
 
 /*
  * check if the file exists or not
  * */
-bool fileExists(const char*filePath);
+bool fileExists(const char *filePath);
 
 #endif // LITTLEFS_WRAPPER_H
