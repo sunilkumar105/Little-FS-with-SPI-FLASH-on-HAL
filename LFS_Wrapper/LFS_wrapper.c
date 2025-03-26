@@ -15,7 +15,7 @@ bool saveFileIntoFlash(const char *fileName, const void *data, size_t dataSize,
 {
     lfs_file_t file;
     int err = lfs_file_open(&littlefs, &file, fileName,
-                            LFS_O_WRONLY | LFS_O_CREAT);
+                            LFS_O_WRONLY | LFS_O_CREAT | LFS_O_TRUNC);
     if (err < 0)
     {
         printf("Failed to open file for writing: %d\r\n", err);

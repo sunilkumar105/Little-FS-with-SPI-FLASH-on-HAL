@@ -40,6 +40,8 @@ void formatFlash(void);
  * @param dataSize: Size of the data to be written.
  * @param ret_BytesWritten: Pointer to store the number of bytes written.
  * @return: true if successful, false otherwise.
+ * @Note: If the file exists it will truncate the file to 0th position
+ * 		  which means the existing file will get erased
  */
 bool saveFileIntoFlash(const char*fileName, const void*data, size_t dataSize,
 			  size_t*ret_BytesWritten);
@@ -91,36 +93,5 @@ char* lfs_gets(char*buf, int size, lfs_file_t*file);
  * check if the file exists or not
  * */
 bool fileExists(const char*filePath);
-
-/********* EXAMPLE TEST OF FILE SYSTEM *********/
-/*
- const char *data = "Hello, LittleFS!";
- size_t bytes_written;
- if (saveFileIntoLittleFS("test.txt", data, strlen(data), &bytes_written)) {
- printf("Data written successfully\n");
- }
-
- size_t file_size;
- if (getFileSize("test.txt", &file_size)) {
- printf("File size: %u bytes\n", file_size);
- }
-
- char buffer[128];
- size_t bytes_read;
- if (readFilefromFlash("test.txt", sizeof(buffer), buffer, &bytes_read)) {
- printf("File content: %s\n", buffer);
- }
-
- const char *append_data = " This is appended text.";
- if (appendDataAtTheEndOfFile("test.txt", append_data, strlen(append_data),
- &bytes_written)) {
- printf("Data appended successfully\n");
- }
-
- if (deleteFilefromFlash("test.txt")) {
- printf("File deleted successfully\n");
- }
- */
-/**********************************************/
 
 #endif // LITTLEFS_WRAPPER_H
